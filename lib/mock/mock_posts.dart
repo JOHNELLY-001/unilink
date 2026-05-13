@@ -1,0 +1,102 @@
+import '../models/post_model.dart';
+
+class MockPosts {
+  MockPosts._();
+
+  static final List<PostModel> feed = [
+    PostModel(
+      id: 'post_001',
+      authorId: 'usr_002',
+      authorName: 'David Mwangi',
+      authorAvatarUrl: 'https://i.pravatar.cc/150?img=12',
+      authorRole: 'student',
+      authorTitle: 'CS Student @ UDSM',
+      content: 'Just submitted my first open-source contribution to a Flutter package! 🎉 It took me 3 weeks to understand the codebase but I finally did it. For all Form 6 students thinking about software engineering — START CODING NOW. Don\'t wait for university. The gap between you and your goals is just consistent daily practice. #Flutter #OpenSource #TanzaniaTech',
+      reactions: {'❤️': 47, '🔥': 23, '👏': 15},
+      commentCount: 12,
+      shareCount: 8,
+      tags: ['Flutter', 'OpenSource', 'TanzaniaTech'],
+      isFeatured: true,
+      type: PostType.text,
+      createdAt: DateTime.now().subtract(const Duration(hours: 3)),
+    ),
+
+    PostModel(
+      id: 'post_002',
+      authorId: 'mtr_001',
+      authorName: 'Grace Kimaro',
+      authorAvatarUrl: 'https://i.pravatar.cc/150?img=23',
+      authorRole: 'mentor',
+      authorTitle: 'Senior Software Engineer @ Vodacom',
+      content: 'I get asked this a lot: "Is it too late to start programming in Form 6?" \n\nMy answer: Absolutely not. I started at Form 6. Here is what I wish I knew:\n\n1. Pick ONE language (Python is perfect for beginners)\n2. Build small projects, not just tutorials\n3. Join online communities — Stack Overflow, GitHub\n4. Find a mentor early (that\'s what UniLink is here for!)\n\nYour journey starts today, not tomorrow. 💪',
+      reactions: {'❤️': 134, '🔥': 67, '💡': 45, '👏': 89},
+      commentCount: 34,
+      shareCount: 56,
+      tags: ['MentorAdvice', 'Programming', 'Career'],
+      isPinned: false,
+      isFeatured: true,
+      type: PostType.text,
+      createdAt: DateTime.now().subtract(const Duration(hours: 8)),
+    ),
+
+    PostModel(
+      id: 'post_003',
+      authorId: 'usr_015',
+      authorName: 'Neema Joram',
+      authorAvatarUrl: 'https://i.pravatar.cc/150?img=56',
+      authorRole: 'student',
+      authorTitle: 'Form 6 Student, Mwl. Nyerere Secondary',
+      content: 'Which university program is better for someone interested in AI?\n\nI have been accepted to both but struggling to decide. Both programs seem good but I\'ve heard the quality of teaching varies a lot. Anyone with real experience at either place?',
+      reactions: {'💡': 12, '❤️': 5},
+      commentCount: 28,
+      shareCount: 3,
+      tags: ['UniversityAdvice', 'AI', 'UDSM'],
+      type: PostType.poll,
+      poll: PollModel(
+        question: 'BSc Computer Science — UDSM or NM-AIST?',
+        options: [
+          PollOptionModel(id: 'p1', text: 'UDSM — Better network & resources', voteCount: 67),
+          PollOptionModel(id: 'p2', text: 'NM-AIST — More research focused', voteCount: 89),
+          PollOptionModel(id: 'p3', text: 'Consider studying abroad', voteCount: 23),
+        ],
+        endsAt: DateTime.now().add(const Duration(days: 3)),
+        hasVoted: false,
+      ),
+      createdAt: DateTime.now().subtract(const Duration(hours: 12)),
+    ),
+
+    PostModel(
+      id: 'post_004',
+      authorId: 'usr_016',
+      authorName: 'Baraka Mushi',
+      authorAvatarUrl: 'https://i.pravatar.cc/150?img=8',
+      authorRole: 'student',
+      authorTitle: 'Finance Student, IFM',
+      content: '🏆 Achievement Unlocked: Just completed my first 30 days of consistent studying on UniLink. The streak feature really keeps me accountable. \n\nThis week I learned about DSE stock market basics from James Tarimo\'s session and it was MIND-BLOWING. I never knew you could invest as a student in Tanzania.\n\nKeep pushing everyone! Progress > Perfection.',
+      reactions: {'🏆': 56, '❤️': 78, '🔥': 34, '👏': 23},
+      commentCount: 19,
+      shareCount: 11,
+      tags: ['Achievement', 'Finance', 'DSE'],
+      type: PostType.achievement,
+      createdAt: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+
+    PostModel(
+      id: 'post_005',
+      authorId: 'mtr_003',
+      authorName: 'Dr. Sarah Mwamba',
+      authorAvatarUrl: 'https://i.pravatar.cc/150?img=32',
+      authorRole: 'mentor',
+      authorTitle: 'Medical Doctor @ Muhimbili National Hospital',
+      content: 'TO ALL FORM 6 STUDENTS ASPIRING TO STUDY MEDICINE:\n\nThe 2025 MUHAS and UDSM Medical School applications open in February. Start preparing NOW.\n\nWhat you need:\n• Strong Biology and Chemistry grades\n• A-Level points (minimum 4.5 for Medicine)\n• Good personal statement\n• Proof of community service if possible\n\nDM me or book a session if you need guidance. I do this for free because someone helped me when I was in your position. 🩺',
+      reactions: {'❤️': 203, '👏': 145, '🙏': 67},
+      commentCount: 87,
+      shareCount: 143,
+      tags: ['Medicine', 'MUHAS', 'UniversityApplications'],
+      isPinned: true,
+      isFeatured: true,
+      type: PostType.text,
+      createdAt: DateTime.now().subtract(const Duration(days: 2)),
+    ),
+  ];
+}
