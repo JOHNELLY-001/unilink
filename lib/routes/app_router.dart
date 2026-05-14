@@ -25,6 +25,11 @@ import '../features/mentors/screens/book_session_screen.dart';
 import '../features/community/screens/community_screen.dart';
 import '../features/opportunities/screens/opportunity_screen.dart';
 import '../features/resources/screens/resources_screen.dart';
+import '../features/messages/screens/messages_screen.dart';
+import '../features/messages/screens/chat_screen.dart';
+import '../features/progress/screens/progress_screen.dart';
+import '../features/profile/screens/profile_screen.dart';
+import '../features/settings/screens/settings_screen.dart';
 
 
 
@@ -232,15 +237,14 @@ List<RouteBase> _buildRoutes() {
         GoRoute(
           path: AppRoutes.messages,
           name: 'messages',
-          builder: (context, state) =>
-          const _PlaceholderScreen('Messages'),
+          builder: (context, state) => const MessagesScreen(),
           routes: [
             GoRoute(
               path: ':conversationId',
               name: 'chat',
               builder: (context, state) {
                 final id = state.pathParameters['conversationId']!;
-                return _PlaceholderScreen('Chat: $id');
+                return ChatScreen(conversationId: id);
               },
             ),
           ],
@@ -248,19 +252,18 @@ List<RouteBase> _buildRoutes() {
         GoRoute(
           path: AppRoutes.progress,
           name: 'progress',
-          builder: (context, state) =>
-          const _PlaceholderScreen('Progress'),
+          builder: (context, state) => const ProgressScreen(),
         ),
+
         GoRoute(
           path: AppRoutes.profile,
           name: 'profile',
-          builder: (context, state) => const _PlaceholderScreen('Profile'),
+          builder: (context, state) => const ProfileScreen(),
         ),
         GoRoute(
           path: AppRoutes.settings,
           name: 'settings',
-          builder: (context, state) =>
-          const _PlaceholderScreen('Settings'),
+          builder: (context, state) => const SettingsScreen(),
         ),
         GoRoute(
           path: AppRoutes.upgrade,
