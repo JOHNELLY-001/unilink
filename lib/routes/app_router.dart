@@ -30,6 +30,9 @@ import '../features/messages/screens/chat_screen.dart';
 import '../features/progress/screens/progress_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
+import '../features/ai_assistant/screens/ai_chat_screen.dart';
+import '../features/ai_assistant/screens/ai_voice_screen.dart';
+import '../features/premium/screens/upgrade_screen.dart';
 
 
 
@@ -192,17 +195,16 @@ List<RouteBase> _buildRoutes() {
             ),
           ],
         ),
+        // Replace AI and upgrade GoRoutes inside ShellRoute:
         GoRoute(
           path: AppRoutes.aiAssistant,
           name: 'aiAssistant',
-          builder: (context, state) =>
-          const _PlaceholderScreen('AI Assistant'),
+          builder: (context, state) => const AiChatScreen(),
           routes: [
             GoRoute(
               path: 'voice',
               name: 'aiVoice',
-              builder: (context, state) =>
-              const _PlaceholderScreen('AI Voice'),
+              builder: (context, state) => const AiVoiceScreen(),
             ),
           ],
         ),
@@ -268,8 +270,7 @@ List<RouteBase> _buildRoutes() {
         GoRoute(
           path: AppRoutes.upgrade,
           name: 'upgrade',
-          builder: (context, state) =>
-          const _PlaceholderScreen('Upgrade to Premium'),
+          builder: (context, state) => const UpgradeScreen(),
         ),
       ],
     ),
