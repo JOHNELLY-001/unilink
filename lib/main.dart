@@ -10,8 +10,7 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Lock to portrait mode for phones;
-  // tablets will be handled via responsive layouts
+  // Portrait only for phones
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -22,18 +21,14 @@ void main() async {
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
     ),
   );
 
-  // Configure global animation defaults
+  // Global animation defaults
   Animate.defaultDuration = const Duration(milliseconds: 350);
 
-  runApp(
-    // ProviderScope is the Riverpod root
-    const ProviderScope(
-      child: UniLinkApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: UniLinkApp()));
 }
 
 class UniLinkApp extends ConsumerWidget {
@@ -44,7 +39,6 @@ class UniLinkApp extends ConsumerWidget {
     final router = ref.watch(appRouterProvider);
 
     return ScreenUtilInit(
-      // Design dimensions based on iPhone 14 Pro (393 × 852)
       designSize: const Size(393, 852),
       minTextAdapt: true,
       splitScreenMode: true,

@@ -56,6 +56,9 @@ dev_dependencies:
   riverpod_generator: ^2.4.3
   build_runner: ^2.4.11
 
+  # URL launching
+  url_launcher: ^6.3.0
+
 flutter:
   uses-material-design: true
 

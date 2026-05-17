@@ -3,12 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/app_typography.dart';
 import '../../routes/app_routes.dart';
 import '../../shared/widgets/navigation/animated_bottom_nav.dart';
 import '../../shared/widgets/navigation/app_drawer.dart';
 import '../../providers/message_provider.dart';
+import '../../providers/auth_provider.dart';
 
 // ─── Bottom nav tab definitions ───────────────────────────────────────────
+
 const _navItems = [
   BottomNavItem(
     icon: Icons.home_outlined,
@@ -37,7 +40,8 @@ const _navItems = [
   ),
 ];
 
-// ─── Tab → route mapping ──────────────────────────────────────────────────
+// ─── Tab routes ───────────────────────────────────────────────────────────
+
 const _tabRoutes = [
   AppRoutes.dashboard,
   AppRoutes.careers,
@@ -46,8 +50,7 @@ const _tabRoutes = [
   AppRoutes.aiAssistant,
 ];
 
-// ─── Shell Provider ───────────────────────────────────────────────────────
-final _currentTabIndexProvider = StateProvider<int>((ref) => 0);
+// ─── App Shell ────────────────────────────────────────────────────────────
 
 class AppShell extends ConsumerWidget {
   final Widget child;
@@ -61,6 +64,11 @@ class AppShell extends ConsumerWidget {
     return 0;
   }
 
+  bool _shouldShowFab(int currentIndex) {
+    // Don't show FAB on AI tab (already there)
+    return currentIndex != 4;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final location = GoRouterState.of(context).matchedLocation;
@@ -72,9 +80,9 @@ class AppShell extends ConsumerWidget {
       backgroundColor: AppColors.surface,
       drawer: const AppDrawer(),
       body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        switchInCurve: Curves.easeInOut,
-        switchOutCurve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 200),
+        switchInCurve: Curves.easeOut,
+        switchOutCurve: Curves.easeIn,
         transitionBuilder: (child, animation) => FadeTransition(
           opacity: animation,
           child: child,
@@ -92,52 +100,95 @@ class AppShell extends ConsumerWidget {
           context.go(_tabRoutes[index]);
         },
       ),
-
-      // ─── Floating AI button (shown only when not on AI tab) ───────
-      floatingActionButton: currentIndex != 4
+      floatingActionButton: _shouldShowFab(currentIndex)
           ? _FloatingAiButton(
         onTap: () => context.go(AppRoutes.aiAssistant),
-      ).animate().scale(
+      )
+          .animate()
+          .scale(
         begin: const Offset(0, 0),
         duration: 400.ms,
+        delay: 100.ms,
         curve: Curves.elasticOut,
       )
           : null,
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.endFloat,
     );
   }
 }
 
-class _FloatingAiButton extends StatelessWidget {
+// ─── Floating AI button ───────────────────────────────────────────────────
+
+class _FloatingAiButton extends StatefulWidget {
   final VoidCallback onTap;
 
   const _FloatingAiButton({required this.onTap});
 
   @override
+  State<_FloatingAiButton> createState() =>
+      _FloatingAiButtonState();
+}
+
+class _FloatingAiButtonState extends State<_FloatingAiButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _glowController;
+  late Animation<double> _glowAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _glowController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true);
+    _glowAnimation = Tween<double>(begin: 0.3, end: 0.6)
+        .animate(CurvedAnimation(
+      parent: _glowController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _glowController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [AppColors.primaryBlueMid, AppColors.accentTeal],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryBlue.withOpacity(0.4),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
+      onTap: widget.onTap,
+      child: AnimatedBuilder(
+        animation: _glowAnimation,
+        builder: (context, child) => Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                AppColors.primaryBlueMid,
+                AppColors.accentTeal,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-          ],
-        ),
-        child: const Icon(
-          Icons.smart_toy_rounded,
-          color: AppColors.white,
-          size: 26,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryBlue
+                    .withOpacity(_glowAnimation.value),
+                blurRadius: 20,
+                spreadRadius: 2,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.smart_toy_rounded,
+            color: Colors.white,
+            size: 26,
+          ),
         ),
       ),
     );
